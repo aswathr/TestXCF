@@ -22,7 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		8456DC3027F5E2CD00119F89 /* FrameworkA.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8456DC2F27F5E2CD00119F89 /* FrameworkA.xcframework */; };
+		846365D627FD317D00745253 /* FrameworkA.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846365D427FD317700745253 /* FrameworkA.xcframework */; };
+		846365D727FD317D00745253 /* FrameworkA.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 846365D427FD317700745253 /* FrameworkA.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84A2BB9227F5D54B005FDB1C /* FrameworkB.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A2BB8F27F5D54B005FDB1C /* FrameworkB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84A2BBA727F5D59B005FDB1C /* SampleB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2BBA627F5D59B005FDB1C /* SampleB.swift */; };
 /* End PBXBuildFile section */
@@ -51,8 +52,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		846365D827FD317D00745253 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				846365D727FD317D00745253 /* FrameworkA.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		8456DC2F27F5E2CD00119F89 /* FrameworkA.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FrameworkA.xcframework; path = ../FrameworkA/XCFramework/xcframeworks/FrameworkA.xcframework; sourceTree = "<group>"; };
+		846365D427FD317700745253 /* FrameworkA.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FrameworkA.xcframework; path = ../FrameworkA/XCFramework/xcframeworks/FrameworkA.xcframework; sourceTree = "<group>"; };
 		84A2BB8C27F5D54B005FDB1C /* FrameworkB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FrameworkB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A2BB8F27F5D54B005FDB1C /* FrameworkB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkB.h; sourceTree = "<group>"; };
 		84A2BB9E27F5D578005FDB1C /* FrameworkA.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FrameworkA.xcodeproj; path = ../FrameworkA/FrameworkA.xcodeproj; sourceTree = "<group>"; };
@@ -67,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8456DC3027F5E2CD00119F89 /* FrameworkA.xcframework in Frameworks */,
+				846365D627FD317D00745253 /* FrameworkA.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +92,7 @@
 		8456DC2D27F5DC8A00119F89 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8456DC2F27F5E2CD00119F89 /* FrameworkA.xcframework */,
+				846365D427FD317700745253 /* FrameworkA.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -166,6 +181,7 @@
 				84A2BB8827F5D54B005FDB1C /* Sources */,
 				84A2BB8927F5D54B005FDB1C /* Frameworks */,
 				84A2BB8A27F5D54B005FDB1C /* Resources */,
+				846365D827FD317D00745253 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -256,7 +272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "env > env.txt\ninstruments -s devices > devices.txt\n#! /bin/sh -e\n# This script demonstrates archive and create action on frameworks and libraries\n# Based on script by @author Boris Bielik\n\n# Release dir path\nOUTPUT_DIR_PATH=\"${PROJECT_DIR}/XCFramework\"\n\nfunction archivePathSimulator {\n  local DIR=${OUTPUT_DIR_PATH}/archives/\"${1}-SIMULATOR\"\n  echo \"${DIR}\"\n}\n\nfunction archivePathDevice {\n  local DIR=${OUTPUT_DIR_PATH}/archives/\"${1}-DEVICE\"\n  echo \"${DIR}\"\n}\n\n# Archive takes 3 params\n#\n# 1st == SCHEME\n# 2nd == destination\n# 3rd == archivePath\nfunction archive {\n    echo \"▸ Starts archiving the scheme: ${1} for destination: ${2};\\n▸ Archive path: ${3}.xcarchive\"\n    xcodebuild clean archive \\\n    -project \"${PROJECT_NAME}.xcodeproj\" \\\n    -scheme ${1} \\\n    -configuration ${CONFIGURATION} \\\n    -destination \"${2}\" \\\n    -archivePath \"${3}\" \\\n    SKIP_INSTALL=NO \\\n    OBJROOT=\"${OBJROOT}/DependentBuilds\" \\\n    BUILD_LIBRARY_FOR_DISTRIBUTION=YES | xcpretty\n}\n\n# Builds archive for iOS simulator & device\nfunction buildArchive {\n  SCHEME=${1}\n\n  archive $SCHEME \"generic/platform=iOS Simulator\" $(archivePathSimulator $SCHEME)\n  archive $SCHEME \"generic/platform=iOS\" $(archivePathDevice $SCHEME)\n}\n\n# Creates xc framework\nfunction createXCFramework {\n  FRAMEWORK_ARCHIVE_PATH_POSTFIX=\".xcarchive/Products/Library/Frameworks\"\n  FRAMEWORK_SIMULATOR_DIR=\"$(archivePathSimulator $1)${FRAMEWORK_ARCHIVE_PATH_POSTFIX}\"\n  FRAMEWORK_DEVICE_DIR=\"$(archivePathDevice $1)${FRAMEWORK_ARCHIVE_PATH_POSTFIX}\"\n\n  xcodebuild -create-xcframework \\\n            -framework ${FRAMEWORK_SIMULATOR_DIR}/${1}.framework \\\n            -framework ${FRAMEWORK_DEVICE_DIR}/${1}.framework \\\n            -output ${OUTPUT_DIR_PATH}/xcframeworks/${1}.xcframework\n}\n\n### Static Libraries cant be turned into frameworks\nfunction createXCFrameworkForStaticLibrary {\n\n  LIBRARY_ARCHIVE_PATH_POSTFIX=\".xcarchive/Products/usr/local/lib\"\n  LIBRARY_SIMULATOR_DIR=\"$(archivePathSimulator $1)${LIBRARY_ARCHIVE_PATH_POSTFIX}\"\n  LIBRARY_DEVICE_DIR=\"$(archivePathDevice $1)${LIBRARY_ARCHIVE_PATH_POSTFIX}\"\n\n  xcodebuild -create-xcframework \\\n            -library ${LIBRARY_SIMULATOR_DIR}/libStaticLibrary.a \\\n            -library ${LIBRARY_DEVICE_DIR}/libStaticLibrary.a \\\n            -output ${OUTPUT_DIR_PATH}/xcframeworks/${1}.xcframework\n}\n\necho \"#####################\"\necho \"▸ Cleaning the dir: ${OUTPUT_DIR_PATH}\"\nrm -rf $OUTPUT_DIR_PATH\n\n#### Static Library ####\n#LIBRARY=\"${PROJECT_NAME}\"\n\n#echo \"▸ Archive $LIBRARY\"\n#buildArchive ${LIBRARY}\n\n#echo \"▸ Create $FRAMEWORK.xcframework\"\n#createXCFrameworkForStaticLibrary ${LIBRARY}\n\n#### Dynamic Framework ####\n\nDYNAMIC_FRAMEWORK=\"${PROJECT_NAME}\"\n\necho \"▸ Archive $DYNAMIC_FRAMEWORK\"\nbuildArchive ${DYNAMIC_FRAMEWORK}\n\necho \"▸ Create $DYNAMIC_FRAMEWORK.xcframework\"\ncreateXCFramework ${DYNAMIC_FRAMEWORK}\n";
+			shellScript = "env > env.txt\ninstruments -s devices > devices.txt\n#! /bin/sh -e\n# This script demonstrates archive and create action on frameworks and libraries\n# Based on script by @author Boris Bielik\n\n# Release dir path\nOUTPUT_DIR_PATH=\"${PROJECT_DIR}/XCFramework\"\n\nfunction archivePathSimulator {\n  local DIR=${OUTPUT_DIR_PATH}/archives/\"${1}-SIMULATOR\"\n  echo \"${DIR}\"\n}\n\nfunction archivePathDevice {\n  local DIR=${OUTPUT_DIR_PATH}/archives/\"${1}-DEVICE\"\n  echo \"${DIR}\"\n}\n\n# Archive takes 3 params\n#\n# 1st == SCHEME\n# 2nd == destination\n# 3rd == archivePath\nfunction archive {\n    echo \"▸ Starts archiving the scheme: ${1} for destination: ${2};\\n▸ Archive path: ${3}.xcarchive\"\n    xcodebuild clean archive \\\n    -project \"${PROJECT_NAME}.xcodeproj\" \\\n    -scheme ${1} \\\n    -configuration ${CONFIGURATION} \\\n    -destination \"${2}\" \\\n    -archivePath \"${3}\" \\\n    SKIP_INSTALL=NO \\\n    OBJROOT=\"${OBJROOT}/DependentBuilds\" \\\n    BUILD_LIBRARY_FOR_DISTRIBUTION=YES | xcpretty\n}\n\n# Builds archive for iOS simulator & device\nfunction buildArchive {\n  SCHEME=${1}\n  archive $SCHEME \"generic/platform=iOS Simulator\" $(archivePathSimulator $SCHEME)\n  archive $SCHEME \"generic/platform=iOS\" $(archivePathDevice $SCHEME)\n}\n\n# Creates xc framework\nfunction createXCFramework {\n  FRAMEWORK_ARCHIVE_PATH_POSTFIX=\".xcarchive/Products/Library/Frameworks\"\n  FRAMEWORK_SIMULATOR_DIR=\"$(archivePathSimulator $1)${FRAMEWORK_ARCHIVE_PATH_POSTFIX}\"\n  FRAMEWORK_DEVICE_DIR=\"$(archivePathDevice $1)${FRAMEWORK_ARCHIVE_PATH_POSTFIX}\"\n\n  xcodebuild -create-xcframework \\\n            -framework ${FRAMEWORK_SIMULATOR_DIR}/${1}.framework \\\n            -framework ${FRAMEWORK_DEVICE_DIR}/${1}.framework \\\n            -output ${OUTPUT_DIR_PATH}/xcframeworks/${1}.xcframework\n}\n\n### Static Libraries cant be turned into frameworks\nfunction createXCFrameworkForStaticLibrary {\n\n  LIBRARY_ARCHIVE_PATH_POSTFIX=\".xcarchive/Products/usr/local/lib\"\n  LIBRARY_SIMULATOR_DIR=\"$(archivePathSimulator $1)${LIBRARY_ARCHIVE_PATH_POSTFIX}\"\n  LIBRARY_DEVICE_DIR=\"$(archivePathDevice $1)${LIBRARY_ARCHIVE_PATH_POSTFIX}\"\n\n  xcodebuild -create-xcframework \\\n            -library ${LIBRARY_SIMULATOR_DIR}/libStaticLibrary.a \\\n            -library ${LIBRARY_DEVICE_DIR}/libStaticLibrary.a \\\n            -output ${OUTPUT_DIR_PATH}/xcframeworks/${1}.xcframework\n}\n\necho \"#####################\"\necho \"▸ Cleaning the dir: ${OUTPUT_DIR_PATH}\"\nrm -rf $OUTPUT_DIR_PATH\n\n#### Static Library ####\n#LIBRARY=\"${PROJECT_NAME}\"\n\n#echo \"▸ Archive $LIBRARY\"\n#buildArchive ${LIBRARY}\n\n#echo \"▸ Create $FRAMEWORK.xcframework\"\n#createXCFrameworkForStaticLibrary ${LIBRARY}\n\n#### Dynamic Framework ####\n\nDYNAMIC_FRAMEWORK=\"${PROJECT_NAME}\"\n\necho \"▸ Archive $DYNAMIC_FRAMEWORK\"\nbuildArchive ${DYNAMIC_FRAMEWORK}\n\necho \"▸ Create $DYNAMIC_FRAMEWORK.xcframework\"\ncreateXCFramework ${DYNAMIC_FRAMEWORK}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -289,6 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -352,6 +369,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -408,6 +426,7 @@
 		84A2BB9627F5D54B005FDB1C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -438,6 +457,7 @@
 		84A2BB9727F5D54B005FDB1C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -21,12 +21,28 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		8456DC2B27F5DB7500119F89 /* SamplePackage in Frameworks */ = {isa = PBXBuildFile; productRef = 8456DC2A27F5DB7500119F89 /* SamplePackage */; };
+		846365D027FD2CBD00745253 /* SamplePackage in Frameworks */ = {isa = PBXBuildFile; productRef = 846365CF27FD2CBD00745253 /* SamplePackage */; };
+		846365D127FD2CE100745253 /* SamplePackage in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 846365CF27FD2CBD00745253 /* SamplePackage */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		84A2BB7C27F5D530005FDB1C /* FrameworkA.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A2BB7927F5D530005FDB1C /* FrameworkA.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84A2BBA527F5D594005FDB1C /* SampleA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A2BBA427F5D594005FDB1C /* SampleA.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		846365D227FD2CE100745253 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				846365D127FD2CE100745253 /* SamplePackage in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		846365CE27FD2C9700745253 /* SamplePackage-main */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "SamplePackage-main"; path = "../SamplePackage-main"; sourceTree = "<group>"; };
 		84A2BB7627F5D530005FDB1C /* FrameworkA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FrameworkA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A2BB7927F5D530005FDB1C /* FrameworkA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkA.h; sourceTree = "<group>"; };
 		84A2BBA427F5D594005FDB1C /* SampleA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleA.swift; sourceTree = "<group>"; };
@@ -40,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8456DC2B27F5DB7500119F89 /* SamplePackage in Frameworks */,
+				846365D027FD2CBD00745253 /* SamplePackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +73,7 @@
 		84A2BB6C27F5D530005FDB1C = {
 			isa = PBXGroup;
 			children = (
+				846365CE27FD2C9700745253 /* SamplePackage-main */,
 				84A2BBB527F5D664005FDB1C /* XCFramework */,
 				84A2BB7827F5D530005FDB1C /* FrameworkA */,
 				84A2BB7727F5D530005FDB1C /* Products */,
@@ -129,6 +146,7 @@
 				84A2BB7227F5D530005FDB1C /* Sources */,
 				84A2BB7327F5D530005FDB1C /* Frameworks */,
 				84A2BB7427F5D530005FDB1C /* Resources */,
+				846365D227FD2CE100745253 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,7 +154,7 @@
 			);
 			name = FrameworkA;
 			packageProductDependencies = (
-				8456DC2A27F5DB7500119F89 /* SamplePackage */,
+				846365CF27FD2CBD00745253 /* SamplePackage */,
 			);
 			productName = FrameworkA;
 			productReference = 84A2BB7627F5D530005FDB1C /* FrameworkA.framework */;
@@ -170,7 +188,6 @@
 			);
 			mainGroup = 84A2BB6C27F5D530005FDB1C;
 			packageReferences = (
-				8456DC2927F5DB7500119F89 /* XCRemoteSwiftPackageReference "SamplePackage" */,
 			);
 			productRefGroup = 84A2BB7727F5D530005FDB1C /* Products */;
 			projectDirPath = "";
@@ -228,6 +245,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -291,6 +309,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -347,6 +366,7 @@
 		84A2BB8027F5D530005FDB1C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -377,6 +397,7 @@
 		84A2BB8127F5D530005FDB1C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -453,21 +474,9 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		8456DC2927F5DB7500119F89 /* XCRemoteSwiftPackageReference "SamplePackage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/twostraws/SamplePackage";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		8456DC2A27F5DB7500119F89 /* SamplePackage */ = {
+		846365CF27FD2CBD00745253 /* SamplePackage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8456DC2927F5DB7500119F89 /* XCRemoteSwiftPackageReference "SamplePackage" */;
 			productName = SamplePackage;
 		};
 /* End XCSwiftPackageProductDependency section */

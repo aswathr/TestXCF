@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FrameworkA
+import FrameworkA //https://forums.swift.org/t/swiftinterface-import/34548/17
 
 public extension Int {
     
